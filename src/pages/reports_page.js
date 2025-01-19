@@ -42,13 +42,59 @@ const ReportsPage = ({
   return (
     <div className="min-h-screen p-4 md:p-8" style={{ backgroundColor: COLORS.mint }}>
       <motion.div 
-        className="max-w-4xl mx-auto"
+        className="max-w-4xl mx-auto relative"
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
+        {/* Wallet Section - Top Right */}
         <motion.div 
-          className="flex items-center justify-center mb-8"
+          className="absolute top-0 right-0"
+          variants={itemVariants}
+        >
+          <div className="flex flex-col items-end space-y-2">
+            {walletConnected ? (
+              <>
+                <button
+                  className="px-4 py-2 rounded-full text-white text-sm transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                  style={{ 
+                    backgroundColor: COLORS.teal,
+                    boxShadow: '0 4px 14px 0 rgba(17, 153, 158, 0.3)'
+                  }}
+                  onClick={disconnectWallet}
+                >
+                  Disconnect Wallet
+                </button>
+                <p className="text-xs font-medium" style={{ color: COLORS.darkTeal }}>Connected: {account}</p>
+                {isOwner && (
+                  <p className="text-xs font-medium" style={{ color: COLORS.turquoise }}>
+                    Administrator Access Granted
+                  </p>
+                )}
+                {!isOwner && (
+                  <p className="text-xs font-medium text-red-500">
+                    Access Denied - Admin Only
+                  </p>
+                )}
+              </>
+            ) : (
+              <button
+                className="px-4 py-2 rounded-full text-white text-sm transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                style={{ 
+                  backgroundColor: COLORS.turquoise,
+                  boxShadow: '0 4px 14px 0 rgba(48, 227, 202, 0.3)'
+                }}
+                onClick={connectWallet}
+              >
+                Connect Admin Wallet
+              </button>
+            )}
+          </div>
+        </motion.div>
+
+        {/* Main Header with Logo */}
+        <motion.div 
+          className="flex items-center justify-center mb-8 pt-16"
           variants={itemVariants}
         >
           <img 
@@ -66,66 +112,21 @@ const ReportsPage = ({
           className="bg-white rounded-xl shadow-lg p-8 mb-8 backdrop-blur-sm bg-opacity-95"
           variants={itemVariants}
         >
-          <p className="text-center text-lg mb-6" style={{ color: COLORS.darkTeal }}>
-            Manage and verify reports from individuals seeking help with addiction recovery
-          </p>
-          
-          <div className="flex justify-center flex-col items-center space-y-4">
-            {/* Wallet Connect/Disconnect Button */}
-            <motion.div 
-              className="w-full max-w-md"
-              variants={itemVariants}
-            >
-              {walletConnected ? (
-                <div className="text-center space-y-3">
-                  <button
-                    className="w-full px-6 py-3 rounded-full text-white transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-                    style={{ 
-                      backgroundColor: COLORS.teal,
-                      boxShadow: '0 4px 14px 0 rgba(17, 153, 158, 0.3)'
-                    }}
-                    onClick={disconnectWallet}
-                  >
-                    Disconnect Wallet
-                  </button>
-                  <p className="text-sm font-medium" style={{ color: COLORS.darkTeal }}>Connected: {account}</p>
-                  {isOwner && (
-                    <p className="text-sm font-medium" style={{ color: COLORS.turquoise }}>
-                      Administrator Access Granted
-                    </p>
-                  )}
-                  {!isOwner && (
-                    <p className="text-sm font-medium text-red-500">
-                      Access Denied - Admin Only
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <button
-                  className="w-full px-6 py-3 rounded-full text-white transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-                  style={{ 
-                    backgroundColor: COLORS.turquoise,
-                    boxShadow: '0 4px 14px 0 rgba(48, 227, 202, 0.3)'
-                  }}
-                  onClick={connectWallet}
-                >
-                  Connect Admin Wallet
-                </button>
-              )}
-            </motion.div>
-
-            {/* Analytics Button - Only show for admin */}
+          <div className="flex items-center justify-between mb-6">
+            <p className="text-lg" style={{ color: COLORS.darkTeal }}>
+              Manage and verify reports from individuals seeking help with addiction recovery
+            </p>
             {isOwner && (
               <motion.button
                 variants={itemVariants}
-                className="flex items-center px-6 py-3 rounded-full text-white transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+                className="flex items-center px-4 py-2 rounded-full text-white text-sm transition-all duration-300 transform hover:scale-105 hover:shadow-lg ml-4"
                 style={{ 
                   backgroundColor: COLORS.turquoise,
                   boxShadow: '0 4px 14px 0 rgba(48, 227, 202, 0.3)'
                 }}
                 onClick={() => navigate('/analysis')}
               >
-                <ChartBar className="w-5 h-5 mr-2" />
+                <ChartBar className="w-4 h-4 mr-2" />
                 View Analytics
               </motion.button>
             )}
